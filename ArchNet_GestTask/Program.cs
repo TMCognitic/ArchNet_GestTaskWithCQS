@@ -6,6 +6,7 @@ using ArchNet_GestTask.Domains.Services;
 using System.Data.Common;
 using System.Data.SqlClient;
 using Tools.CQS.Commands;
+using Tools.CQS.Queries;
 
 namespace ArchNet_GestTask
 {
@@ -17,22 +18,26 @@ namespace ArchNet_GestTask
             {
                 IPersonneRepository repository = new PersonneService(connection);
 
-                //IEnumerable<Personne> personnes = repository.Execute(new GetAllPersonneQuery());
+                QueryResult<IEnumerable<Personne>> queryResult = repository.Execute(new GetAllPersonneQuery());
 
-                //foreach (Personne p in personnes)
+                if(queryResult.IsSuccess)
+                {
+                    foreach (Personne p in queryResult.Result!)
+                    {
+                        Console.WriteLine(p.Nom);
+                    }
+                }
+
+
+                //CommandResult result = repository.Execute(new CreatePersonneCommand("Woodpecker", "Woody"));
+                //if(result.IsSuccess)
                 //{
-                //    Console.WriteLine(p.Nom);
+                //    Console.WriteLine("Insertion réussie");
                 //}
-
-                CommandResult result = repository.Execute(new CreatePersonneCommand("Woodpecker", "Woody"));
-                if(result.IsSuccess)
-                {
-                    Console.WriteLine("Insertion réussie");
-                }
-                else
-                {
-                    Console.WriteLine($"Un problème est survernu : \n{result.ErrorMessage}");
-                }
+                //else
+                //{
+                //    Console.WriteLine($"Un problème est survernu : \n{result.ErrorMessage}");
+                //}
             }         
             
 
