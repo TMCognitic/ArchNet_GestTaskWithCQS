@@ -11,11 +11,6 @@ namespace Tools.CQS.Queries
     public class QueryResult<TResult>
         where TResult : class
     {
-        public static explicit operator TResult?(QueryResult<TResult> result)
-        {   
-            return result.Result;
-        }
-
         public static QueryResult<TResult> Success(TResult result)
         {
             return new QueryResult<TResult>(true, result:result);
